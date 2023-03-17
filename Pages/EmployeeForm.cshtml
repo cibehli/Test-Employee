@@ -1,0 +1,81 @@
+﻿@page
+@model Project_Employees.Pages.EmployeeFormModel
+@{
+	ViewData["Title"] = "Employees Form";
+
+}
+
+<!-- Latest compiled and minified CSS -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+@if (Model.errorMessage.Length > 0)
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMessage</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+	</div>
+}
+<script>
+	function ValidarRFC(valor) {
+		if (!valor.value.match(/^[A-Za-zñÑ&]{3,4}\d{6}\w{3}$/)) {
+			alert("Favor de escribir un RFC valido.");
+			valor.focus();
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+</script>
+<h3>Employee Form</h3>
+
+<div class="container">
+
+	<form method="post">
+		<input type="hidden" value="@Model.employee.ID" name="id" />
+		<table>
+			<tr>
+				<td>Name: </td>
+				<td> <input type="text" name="txt_name" value="@Model.employee.Name" required pattern="[a-zA-Z\s]+" /></td>
+			</tr>
+			<tr>
+				<td>Last Name: </td>
+				<td> <input type="text" name="txt_lastname" value="@Model.employee.LastName" required pattern="[a-zA-Z\s]+" /></td>
+			</tr>
+			<tr>
+				<td>RFC: </td>
+				<td> <input type="text" name="txt_rfc" maxlength="13" value="@Model.employee.RFC" required onchange="ValidarRFC(txt_rfc)" placeholder="AAAA123456123" /></td>
+			</tr>
+			<tr>
+				<td>Birthday: </td>
+				<td> <input type="date" name="txt_birthday" required value="@Model.employee.BornDate.ToString("yyyy-MM-dd")" /></td>
+
+
+			</tr>
+			<tr>
+				<td>Status: </td>
+				<td>
+					<select name="cbo_status" asp-for="@Model.employee.Status">
+						<option value="0">Select Status</option>
+						<option value="1">Active</option>
+						<option value="2">Inactive</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+
+				<td><input type="submit" value="submit" /></td>
+
+			</tr>
+
+		</table>
+		@if (Model.successMessage.Length > 0)
+		{
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>@Model.successMessage</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+			</div>
+		}
+	</form>
+</div>
